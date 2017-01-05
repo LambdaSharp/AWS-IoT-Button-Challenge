@@ -1,36 +1,67 @@
-# AWS IoT Magic Night
+# AWS IoT Button with .NET Core
 
-# Requirements
+## Prerequisites
+1. Sign-up for an [AWS account](https://aws.amazon.com)
+2. Install [.NET Core 1.0](https://www.microsoft.com/net/core)
+3. Install [Nodejs](https://nodejs.org/en/)
+4. Install [Yeoman](http://yeoman.io/codelab/setup.html)
+5. Install AWS C# Lambda generator: `npm install -g yo generator-aws-lambda-dotnet`
+6. Install [AWS CLI](https://aws.amazon.com/cli/)
+7. Install [Visual Studio Code](https://code.visualstudio.com/)
 
-1. AWS account
-2. NodeJS v6 (preferrably in a Linux, BSD, or OSX environment)
-    - Install NVM (Node Version Manager)
-    ```sh
-    $ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash
-    ```
-    - Install or, if NVM already installed, use NodeJS 6
-    ```sh
-    $ nvm install 6
-    ```
-    ```sh
-    $ nvm use 6
-    ```
-3. AWS IoT programmable button
-4. Git client
+## Getting Started with AWS IoT Button
 
-# Setup
+1. Get an [AWS IoT Button](https://www.amazon.com/dp/B01C7WE5WM/) (if not provided)
+2. Install and launch [AWS IoT Button mobile app]((https://aws.amazon.com/iotbutton/getting-started/)) on your mobile device
+3. Sign-in with your AWS credentials
+4. Click `Setup AWS IoT Button`
+5. Click `Agree & Get Started`
+6. Scan AWS IoT Button barcode on the box with mobile app
+7. Customize the name of the AWS IoT Button to make it easy to identify
+8. Click `Register Button`
+9. Hold AWS IoT Button for 6 seconds to enable its Wi-Fi hotspot
+10. Make note of the AWS IoT Button name (used to connect later)
+11. Click `Copy password to clipboard`
+12. Go to `Wi-Fi Settings` on mobile device
+13. Connect to AWS IoT Button Wi-Fi network
+14. Go back to AWS IoT Button mobile app
+15. Pick local Wi-Fi network for AWS IoT Button
+16. Provide password for local Wi-Fi network
+17. Click `Confirm`
+18. Select `Send Email (nodejs)` under "Choose what to do when your button is pressed"
+19. Provide your email address
+20. Click `Set Action`
+21. Press the AWS IoT Button and confirm that you receive an email!
 
-The challenge introduction will explain how to create TLS private signing keys and certificates for AWS IoT.
+## blah
 
-1. Clone this repo
-```sh
-$ git clone git@github.com:awssd/aws-iot-magic-night.git
-```
-2. Install NPM (Node Package Manager) dependencies for the Scorekeeper "device" application
-```sh
-$ cd aws-iot-magic-night/scorekeeper
-$ npm install
-```
+1. Open the [AWS Web Console](https://console.aws.amazon.com)
+2. Expand `All Services` tab
+3. Click on the `AWS IoT` link
+4. Click on the `Rules` link in the left navigation
+5. Click on the `iobutton_...` rule (if you don't see it, you are not connected to the correct region!)
+6. Click `Add Action`
+7. Click `Split message into multiple columns of a database table`
+8. Click `Configure Action`
+9. Click `Create a new resource` (a new browser tab will open)
+7. Click `Create Table`
+8. Enter a custom table name
+9. Enter `Id` as primary key name
+10. Click `Create`
+11. Close the DynamoDB browser tab
+12. Click the refresh icon
+13. Select the newly created dynamodb table
+14. Click `Create a new role`
+15. Enter a custom role name
+16. Click `Create a new role`
+17. Select newly created role
+18. Click `Update role`
+19. Click `Add action`
+
+
+
+
+
 3. Create an AWS SQS queue for this challenge
 4. Configure Scorekeeper "device" application's scorekeper.js with the following values
     - The paths to the private signing key and certificate generated for this device
@@ -38,10 +69,7 @@ $ npm install
     - The AWS region you are using for this challenge
     - An AWS access key and secret that can read from your AWS SQS queue
     - The AWS SQS queue url
-    - The AWS Iot Button device serial number (DSN). The DSN will be the MQTT topic that is published and subscribed to for button click messages.    
-5. Configure AWS IoT button with MindTouch WiFi password, TLS private signing key, and certificate
-    - MindTouch WiFi password will be available in the challenge introduction
-    - [AWS IoT Button Configuration Documentation](http://docs.aws.amazon.com/iot/latest/developerguide/configure-iot.html)
+    - The AWS Iot Button device serial number (DSN). The DSN will be the MQTT topic that is published and subscribed to for button click messages.
 6. Create a DynamoDB table for storing the Scorekeeper "point" message
     - The Scorekeeper "point" message contains properties for id, team, and timestamp
     - The DynamoDB trigger lambda function assumes that "team" is an index
