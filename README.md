@@ -1,109 +1,55 @@
-# AWS IoT Button with .NET Core
+# Build a Serverless .NET Core app for the AWS IoT Button
+
+In this challenge, we're going to learn how to write a serverless .NET Core backend for an IoT device. We're going to use the [AWS IoT Button](https://www.amazon.com/dp/B01C7WE5WM/), which is a nifty little devices that is very simple to setup and send events to the [AWS IoT](https://aws.amazon.com/iot/) service. We're then going to define new AWS IoT rules to store events in [DynamoDB](https://aws.amazon.com/dynamodb/) and send them to a [AWS Lambda](https://aws.amazon.com/lambda/) function for additional processing.
 
 ## Prerequisites
-1. Sign-up for an [AWS account](https://aws.amazon.com)
-2. Install [.NET Core 1.0](https://www.microsoft.com/net/core)
-3. Install [Nodejs](https://nodejs.org/en/)
-4. Install [Yeoman](http://yeoman.io/codelab/setup.html)
-5. Install AWS C# Lambda generator: `npm install -g yo generator-aws-lambda-dotnet`
-6. Install [AWS CLI](https://aws.amazon.com/cli/)
-7. Install [Visual Studio Code](https://code.visualstudio.com/)
+1. AWS Tools
+    1. Sign-up for an [AWS account](https://aws.amazon.com)
+    2. Install [AWS CLI](https://aws.amazon.com/cli/)
+2. .NET Core
+    1. Install [.NET Core 1.0](https://www.microsoft.com/net/core)
+    2. Install [Visual Studio Code](https://code.visualstudio.com/)
+    3. Install [C# Extension for VS Code](https://code.visualstudio.com/Docs/languages/csharp)
+3. AWS C# Lambda Tools
+    1. Install [Nodejs](https://nodejs.org/en/)
+    2. Install [Yeoman](http://yeoman.io/codelab/setup.html)
+    3. Install AWS C# Lambda generator: `npm install -g yo generator-aws-lambda-dotnet`
 
-## Getting Started with AWS IoT Button
+## Level 1: Sending an email from the AWS IoT Button
+
+To begin, let's register the AWS IoT Button and confirm it can communicate with the AWS IoT backend. The followig instructions should get you there.
 
 1. Get an [AWS IoT Button](https://www.amazon.com/dp/B01C7WE5WM/) (if not provided)
 2. Install and launch [AWS IoT Button mobile app]((https://aws.amazon.com/iotbutton/getting-started/)) on your mobile device
-3. Sign-in with your AWS credentials
-4. Click `Setup AWS IoT Button`
-5. Click `Agree & Get Started`
-6. Scan AWS IoT Button barcode on the box with mobile app
-7. Customize the name of the AWS IoT Button to make it easy to identify
-8. Click `Register Button`
-9. Hold AWS IoT Button for 6 seconds to enable its Wi-Fi hotspot
-10. Make note of the AWS IoT Button name (used to connect later)
-11. Click `Copy password to clipboard`
-12. Go to `Wi-Fi Settings` on mobile device
-13. Connect to AWS IoT Button Wi-Fi network
-14. Go back to AWS IoT Button mobile app
-15. Pick local Wi-Fi network for AWS IoT Button
-16. Provide password for local Wi-Fi network
-17. Click `Confirm`
-18. Select `Send Email (nodejs)` under "Choose what to do when your button is pressed"
-19. Provide your email address
-20. Click `Set Action`
-21. Press the AWS IoT Button and confirm that you receive an email!
+3. Register the AWS IoT Button
+4. Select `Send Email (nodejs)` as action
 
-## blah
+**ACCEPTANCE TEST:** Press the AWS IoT Button and confirm that you receive an email!
 
-1. Open the [AWS Web Console](https://console.aws.amazon.com)
-2. Expand `All Services` tab
-3. Click on the `AWS IoT` link
-4. Click on the `Rules` link in the left navigation
-5. Click on the `iobutton_...` rule (if you don't see it, you are not connected to the correct region!)
-6. Click `Add Action`
-7. Click `Split message into multiple columns of a database table`
-8. Click `Configure Action`
-9. Click `Create a new resource` (a new browser tab will open)
-7. Click `Create Table`
-8. Enter a custom table name
-9. Enter `Id` as primary key name
-10. Click `Create`
-11. Close the DynamoDB browser tab
-12. Click the refresh icon
-13. Select the newly created dynamodb table
-14. Click `Create a new role`
-15. Enter a custom role name
-16. Click `Create a new role`
-17. Select newly created role
-18. Click `Update role`
-19. Click `Add action`
+**NOTE:** if you get the red blinking LED of doom, see the [AWS IoT Button FAQ](https://aws.amazon.com/iotbutton/faq/) to determine what it means.
 
 
+## Level 2: Store AWS IoT Button events in DynamoDB
+
+For the second part, we want to enhance the [AWS IoT](https://aws.amazon.com/iot/) rule that was created in the previous step so that each received event is stored in a [DynamoDB](https://aws.amazon.com/dynamodb/) table. Make sure to split the message into multiple columns when it is stored. Also, beware that DynamoDB records are uniquely identified by their primary and sort key. Check the [AWS IoT SQL](http://docs.aws.amazon.com/iot/latest/developerguide/iot-sql-reference.html) syntax for some ideas.
+
+**ACCEPTANCE TEST:** The AWS IoT button can send three different kind of events: single click, double clikc, and long click (3 seconds). Each event should be recorded as a new row, giving you a history of all clicks on your AWS IoT Button.
 
 
+## Level 3: Invoke C# AWS Lambda function
 
-3. Create an AWS SQS queue for this challenge
-4. Configure Scorekeeper "device" application's scorekeper.js with the following values
-    - The paths to the private signing key and certificate generated for this device
-    - The AWS Account ID (You can get this from any ARN)
-    - The AWS region you are using for this challenge
-    - An AWS access key and secret that can read from your AWS SQS queue
-    - The AWS SQS queue url
-    - The AWS Iot Button device serial number (DSN). The DSN will be the MQTT topic that is published and subscribed to for button click messages.
-6. Create a DynamoDB table for storing the Scorekeeper "point" message
-    - The Scorekeeper "point" message contains properties for id, team, and timestamp
-    - The DynamoDB trigger lambda function assumes that "team" is an index
-7. Create an IAM role for a DynanmoDB trigger Lambda function
-    - Example policies are available in lambda/polices. Look for any places that need values to be replaced such as Lambda function names and DynamoDB tables.
-8. Install and configure the DynamoDB trigger Lambda function (lambda/dynamodb-trigger.js) with the following values
-    - The AWS SQS queue url
-    - The AWS region you are using for this challenge
-    - The DynamoDB table name
-9. Run the Scorekeper "device" application
-```sh
-$ node scorekeeper.js
+For the third part, we want to invoke a C# [AWS Lambda](https://aws.amazon.com/lambda/) function when a long press occurs. When this function is invoked, it should query the DynamoDB table for all records belowing to the button, tally the results and print them on the console (console output is visible in the [CloudWatch Logs](http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)).
+
+There is a skeleton C# function in `src/AWSIoTButton` that is ready to be deployed. Assuming you have already stored your [default AWS credentials](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html) under `.aws` in your user folder, all you need to do is run:
 ```
-# Challenge
+dotnet lambda deploy-function -fn my-iot-button-function
+```
 
-Using the boilerplate code provided and setup described above, configure the AWS IoT rules engine to store the Scorekeeper's results in DynamoDB. Ensure that when the AWS IoT button is clicked, the Scorekeeper "device" application announces the point that was scored, correctly, and outputs the current results of the game (the data persisted in DynamoDB).
+**ACCEPTANCE TEST:** Do a sequence of single and double clicks on the AWS IoT Button. Confirm all events are recoreded in DynamoDB then do a long click. Confirm in the CloudWatch Logs
 
-Now that you can see how AWS IoT interacts with devices over MQTT and how its messages are forwarded to the rest of the AWS infrastructure, its time to move forward in two distinct challenges. You can pick one, or both.
 
-1. Collect stats such as CPU temperature, memory pressure, and other properties of the environment running the Scorekeeper "device" application and the battery voltage of the AWS IoT button, and send them as topics via MQTT. Create rules to forward messages to Cloudwatch for alerts, measurements, and graphing.
+## Boss Level 4: Send results to SQS and clean-out the table
 
-2. Upgrade the Scorekeper "device" application from a simple MQTT pubsub client, to a AWS IoT "Thing", with a device shadow. Create a second "device" application using an [AWS IoT SDK](https://aws.amazon.com/iot/sdk/) (or use the AWS IoT button), that can turn the Scorekeeper "device" on and off, by changing state via the device shadow. When the Scorekeeper "device" is turned off, it should output that it is disabled and no points should be sent to DynamoDB and no scorekeeping results should be announced.
+For the final part, we want to results to sent to a public SQS queue so they can shown to everyone. In addition, once the SQS message has been sent, we want to also delete all the corresponding records from the DynamoDB table.
 
-# Additional Resources
-
-* Setup Node Client:
-    - http://docs.aws.amazon.com/iot/latest/developerguide/iot-device-sdk-node.html
-
-* AWS IoT NodeJS SDK
-    - https://github.com/aws/aws-iot-device-sdk-js
-    - (Working with the Thing Shadow) https://github.com/aws/aws-iot-device-sdk-js#thing-shadow-class
-
-* AWS IoT DynamoDB Rule:
-    - http://docs.aws.amazon.com/iot/latest/developerguide/iot-ddb-rule.html
-
-* AWS IoT Lambda Rule:
-    - http://docs.aws.amazon.com/iot/latest/developerguide/iot-lambda-rule.html
+**ACCEPTANCE TEST:** Do a sequence of single and double clicks on the AWS IoT Button. Do a long click. Confirm the result is shown to everyone and that all the records are gone from the DynamoDB table.
