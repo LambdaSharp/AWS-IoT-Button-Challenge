@@ -38,7 +38,7 @@ For the second part, we want to enhance the [AWS IoT](https://aws.amazon.com/iot
 
 ## Level 3: Invoke C# AWS Lambda function
 
-For the third part, we want to invoke a C# [AWS Lambda](https://aws.amazon.com/lambda/) function when a long press occurs. When this function is invoked, it should query the DynamoDB table for all records belonging to the button, tally the results and print them on the console (console output is visible in the [CloudWatch Logs](http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)).
+For the third part, we want to invoke a C# [AWS Lambda](https://aws.amazon.com/lambda/) function when a long press occurs. When this function is invoked, it should query the [DynamoDB](https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/dynamodb-intro.html) table for all records belonging to the button, tally the results and print them on the console (console output is visible in the [CloudWatch Logs](http://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/WhatIsCloudWatchLogs.html)).
 
 There is a skeleton C# function in `src/AWSIoTButton` that is ready to be deployed. Assuming you have already stored your [default AWS credentials](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html) under `.aws` in your user folder, all you need to do is run:
 ```
@@ -50,6 +50,6 @@ dotnet lambda deploy-function -fn my-iot-button-function
 
 ## Boss Level 4: Send results to SQS and clean-out the table
 
-For the final part, we want to results to sent to a public SQS queue so they can shown to everyone. In addition, once the SQS message has been sent, we want to also delete all the corresponding records from the DynamoDB table.
+For the final part, we want to results to sent to a public SQS queue so they can shown to everyone. In addition, once the [SQS](https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/sqs-apis-intro.html) message has been sent, we want to also delete all the corresponding records from the DynamoDB table.
 
 **ACCEPTANCE TEST:** Do a sequence of single and double clicks on the AWS IoT Button. Do a long click. Confirm the result is shown to everyone and that all the records are gone from the DynamoDB table.
