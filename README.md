@@ -45,7 +45,7 @@ There is a skeleton C# function in `src/AWSIoTButton` that is ready to be deploy
 dotnet lambda deploy-function -fn my-iot-button-function
 ```
 
-**ACCEPTANCE TEST:** Do a sequence of single and double clicks on the AWS IoT Button. Confirm all events are recoreded in DynamoDB then do a long click. Confirm in the CloudWatch Logs
+**ACCEPTANCE TEST:** Do a sequence of single and double clicks on the AWS IoT Button. Confirm all events are recorded in DynamoDB then do a long click. Confirm in the CloudWatch Logs
 
 
 ## Boss Level 4: Send results to SQS and clean-out the table
