@@ -6,7 +6,7 @@ using Amazon;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 
-namespace ConsoleApplication {
+namespace ScoreKeeper {
 
     public class Program {
 
