@@ -12,12 +12,10 @@ using Newtonsoft.Json;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializerAttribute(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
-
 namespace AWSIoTButton {
     public class AWSIoTButtonEvent {
 
         //--- Fields ---
-
         [JsonProperty("serialNumber")]
         public string SerialNumber;
 
