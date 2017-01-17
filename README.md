@@ -50,6 +50,6 @@ dotnet lambda deploy-function -fn my-iot-button-function
 
 ## Boss Level: Show results in a Console app
 
-For the final part, we want the results of the C# Lambda function to be displayed on a console screen. Details of the implementation are left as an excercise to the reader.
+For the final part, we want the results of the C# Lambda function to be displayed on a console screen. Details of the implementation are left as an exercise to the reader.
 
 **ACCEPTANCE TEST:** Do a sequence of single and double clicks on the AWS IoT Button. Do a long click. Confirm the result is shown to everyone and that all the records are gone from the DynamoDB table.
