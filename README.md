@@ -48,8 +48,8 @@ dotnet lambda deploy-function -fn my-iot-button-function
 **ACCEPTANCE TEST:** Do a sequence of single and double clicks on the AWS IoT Button. Confirm all events are recorded in DynamoDB then do a long click. Confirm in the CloudWatch Logs
 
 
-## Boss Level 4: Send results to SQS and clean-out the table
+## Boss Level: Show results in a Console app
 
-For the final part, we want to results to sent to a public SQS queue so they can shown to everyone. In addition, once the [SQS](https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/sqs-apis-intro.html) message has been sent, we want to also delete all the corresponding records from the DynamoDB table.
+For the final part, we want the results of the C# Lambda function to be displayed on a console screen. Details of the implementation are left as an excercise to the reader.
 
 **ACCEPTANCE TEST:** Do a sequence of single and double clicks on the AWS IoT Button. Do a long click. Confirm the result is shown to everyone and that all the records are gone from the DynamoDB table.
